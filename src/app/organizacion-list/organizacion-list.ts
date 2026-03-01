@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../posts/api.service';
 import { Organizacion } from '../models/organizacion.model';
@@ -13,13 +13,13 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 })
 export class OrganizacionList implements OnInit {
   organizaciones: Organizacion[] = [];
-  loading = false;
+  loading = true;
   errorMsg = '';
   // Variable para controlar la visibilidad del formulario
   mostrarForm = false;
   organizacionForm!: FormGroup;
 
-  constructor(private api: ApiService, private fb: FormBuilder) {
+  constructor(private api: ApiService, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.organizacionForm = this.fb.group({
       nombre: ['', Validators.required],
     });
@@ -33,15 +33,18 @@ export class OrganizacionList implements OnInit {
   load(): void {
     this.loading = true;
     this.errorMsg = '';
+    this.cdr.detectChanges();
 
     this.api.getOrganizaciones().subscribe({
       next: (res) => {
         this.organizaciones = res?.organizaciones ?? [];
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMsg = 'No se han podido cargar las organizaciones.';
         this.loading = false;
+        this.cdr.detectChanges();
       },
     });
   }
@@ -58,6 +61,9 @@ export class OrganizacionList implements OnInit {
 guardar(): void {
   if (this.organizacionForm.invalid) return;
 
+  this.loading = true;
+  this.errorMsg = '';
+
   this.api.createOrganizacion(this.organizacionForm.value.nombre).subscribe({
     next: () => {
       this.mostrarForm = false;
@@ -69,4 +75,19 @@ guardar(): void {
     }
   });
 }
+
+  delete(id: string): void {
+    this.errorMsg = '';
+    this.loading = true;
+
+    this.api.deleteOrganizacion(id).subscribe({
+      next: () => {
+        this.load();
+      },
+      error: () => {
+        this.errorMsg = 'Error delete';
+        this.loading = false;
+      }
+    });
+  }
 }

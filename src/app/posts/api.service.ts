@@ -19,26 +19,26 @@ export class ApiService {
 
   getOrganizaciones(): Observable<{ organizaciones: Organizacion[] }> {
     return this.http.get<{ organizaciones: Organizacion[] }>(
-      `${this.baseUrl}/organizaciones/get`
+      `${this.baseUrl}/organizaciones`
     );
   }
 
   getOrganizacionById(organizacionId: string): Observable<{ organizacion: Organizacion }> {
     return this.http.get<{ organizacion: Organizacion }>(
-      `${this.baseUrl}/organizaciones/get/${organizacionId}`
+      `${this.baseUrl}/organizaciones/${organizacionId}`
     );
   }
 
   createOrganizacion(name: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/organizaciones/create`, { name });
+    return this.http.post(`${this.baseUrl}/organizaciones`, { name });
   }
 
   updateOrganizacion(organizacionId: string, name: string): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/organizaciones/update/${organizacionId}`, { name });
+    return this.http.patch(`${this.baseUrl}/organizaciones/${organizacionId}`, { name });
   }
 
   deleteOrganizacion(organizacionId: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/organizaciones/delete/${organizacionId}`);
+    return this.http.delete(`${this.baseUrl}/organizaciones/${organizacionId}`);
   }
 
   // =========================
@@ -46,24 +46,24 @@ export class ApiService {
   // =========================
 
   getUsuarios(): Observable<{ usuarios: Usuario[] }> {
-  return this.http.get<{ usuarios: Usuario[] }>(`${this.baseUrl}/usuarios/get/`);
+  return this.http.get<{ usuarios: Usuario[] }>(`${this.baseUrl}/usuarios`);
 }
 
   getUsuarioById(usuarioId: string): Observable<{ usuario: Usuario }> {
     return this.http.get<{ usuario: Usuario }>(
-      `${this.baseUrl}/usuarios/get/${usuarioId}`
+      `${this.baseUrl}/usuarios/${usuarioId}`
     );
   }
 
   createUsuario(name: string, organizacion: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/usuarios/create`, { name, organizacion });
+    return this.http.post(`${this.baseUrl}/usuarios`, { name, organizacion });
   }
 
   updateUsuario(usuarioId: string, name: string, organizacion: string): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/usuarios/update/${usuarioId}`, { name, organizacion });
+    return this.http.patch(`${this.baseUrl}/usuarios/${usuarioId}`, { name, organizacion });
   }
 
   deleteUsuario(usuarioId: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/usuarios/delete/${usuarioId}`);
+    return this.http.delete(`${this.baseUrl}/usuarios/${usuarioId}`);
   }
 }

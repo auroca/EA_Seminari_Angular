@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../posts/api.service';
 import { Usuario } from '../models/usuario.model';
@@ -20,7 +20,7 @@ export class UsuarioList implements OnInit {
   mostrarForm = false;
   usuarioForm!: FormGroup;
 
-  constructor(private api: ApiService, private fb: FormBuilder) {
+  constructor(private api: ApiService, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.usuarioForm = this.fb.group({
       name: ['', Validators.required],
       organizacion: ['', Validators.required],
@@ -35,16 +35,19 @@ export class UsuarioList implements OnInit {
   load(): void {
     this.loading = true;
     this.errorMsg = '';
+    this.cdr.detectChanges();
 
     this.api.getUsuarios().subscribe({
       next: (res) => {
         this.usuarios = res?.usuarios ?? [];
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMsg = 'No se han podido cargar los usuarios.';
         this.loading = false;
+        this.cdr.detectChanges();
       },
     });
   }

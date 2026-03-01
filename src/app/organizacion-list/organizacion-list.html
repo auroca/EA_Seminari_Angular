@@ -7,6 +7,7 @@
   <li class="card" *ngFor="let org of organizaciones; trackBy: trackById">
     <span class="name">{{ org.name }}</span>
     <span class="muted">{{ org._id }}</span>
+    <button type="button" class="btn" (click)="delete(org._id)">X</button>
   </li>
 </ul>
 
