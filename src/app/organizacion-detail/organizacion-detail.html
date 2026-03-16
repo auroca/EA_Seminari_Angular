@@ -1,0 +1,18 @@
+<h2>Detalle de la organización</h2>
+
+<a routerLink="/" class="btn">Volver</a>
+
+@if (loading) {
+  <p>Cargando...</p>
+} @else if (errorMsg) {
+  <p>{{ errorMsg }}</p>
+} @else if (organizacion) {
+  <div class="card">
+    <h3>{{ organizacion.name }}</h3>
+    <p><strong>ID:</strong> {{ organizacion._id }}</p>
+  </div>
+
+  <app-organizacion-sync-users
+    [organizacionId]="organizacion._id">
+  </app-organizacion-sync-users>
+}

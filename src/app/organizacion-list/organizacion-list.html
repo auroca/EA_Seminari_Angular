@@ -1,11 +1,13 @@
 <h2>Organizaciones</h2>
 
 <!-- Buscador: buscar por nombre -->
-<p> <input
-  type="text"
-  [formControl]="searchControl"
-  placeholder="Buscar por nombre..."
-/> </p>
+<p>
+  <input
+    type="text"
+    [formControl]="searchControl"
+    placeholder="Buscar por nombre..."
+  />
+</p>
 
 <!-- Mensajes de estado -->
 <p *ngIf="loading">Cargando...</p>
@@ -14,16 +16,16 @@
 <!-- Mensaje si no hay organizaciones -->
 <ul class="list" *ngIf="!loading && !errorMsg && organizaciones.length > 0">
   <!-- Lista de organizaciones -->
-  <li class="card" *ngFor="let org of organizacionesVisibles; trackBy: trackById"> 
-    
+  <li class="card" *ngFor="let org of organizacionesVisibles; trackBy: trackById">
+
     <!-- Nombre con truncado si supera de 15 caracteres y botón para expandir -->
     <div>
       <span class="name">
-      {{
-        expanded[org._id] || org.name.length <= 15
-          ? org.name
-          : (org.name | slice:0:15) + '...'
-      }}
+        {{
+          expanded[org._id] || org.name.length <= 15
+            ? org.name
+            : (org.name | slice:0:15) + '...'
+        }}
       </span>
 
       <!-- Botón para mostrar más o menos si el nombre es largo -->
@@ -45,6 +47,11 @@
         Editar
       </button>
 
+      <!-- BOTÓN VER DETALLE -->
+      <a class="btn" [routerLink]="['/organizaciones', org._id]">
+        Ver detalle
+      </a>
+
       <!-- BOTÓN ELIMINAR -->
       <button type="button"
               class="btn delete-btn"
@@ -57,18 +64,17 @@
 </ul>
 
 <!-- Botones para mostrar más/menos organizaciones si supera el limite -->
-<button 
+<button
   *ngIf="!mostrarTodasOrganizaciones && organizaciones.length > limite"
   class="btn"
   (click)="mostrarMas()">
-
   Mostrar más
 </button>
-<button 
+
+<button
   *ngIf="mostrarTodasOrganizaciones"
   class="btn"
   (click)="mostrarTodasOrganizaciones = false">
-
   Mostrar menos
 </button>
 

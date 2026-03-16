@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Organizacion } from '../models/organizacion.model';
 import { environment } from '../../environments/environment';
-
+import { Usuario } from '../models/usuario.model';
 
 
 @Injectable({
@@ -50,4 +50,12 @@ export class OrganizacionService {
       `${this.baseUrl}/organizaciones/${id}`
     );
   }
+
+  //Ejercicio: Obtener los usuarios de una organizacion
+  getUsuariosByOrganizacion(id: string): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(
+      `${this.baseUrl}/organizaciones/${id}/usuarios`
+    );
+  }
+
 }

@@ -1,0 +1,67 @@
+<h3>Sincronización de usuarios</h3>
+
+<p *ngIf="loading">Cargando usuarios...</p>
+<p *ngIf="!loading && errorMsg" style="color: red;">{{ errorMsg }}</p>
+<p *ngIf="!loading && successMsg" style="color: green;">{{ successMsg }}</p>
+
+<div *ngIf="!loading">
+  <div class="sync-grid">
+
+    <!-- USUARIOS DENTRO DE LA ORGANIZACIÓN -->
+    <div class="card">
+      <h4>Usuarios vinculados</h4>
+
+      <ul class="list" *ngIf="usuariosEnOrganizacion.length > 0; else sinUsuariosOrg">
+        <li *ngFor="let user of usuariosEnOrganizacion" class="item">
+          <div>
+            <strong>{{ user.name }}</strong><br />
+            <span>{{ user.email }}</span>
+          </div>
+
+          <div class="actions">
+            <select [(ngModel)]="destinosSeleccionados[user._id]">
+              <option value="">Mover a...</option>
+              <option *ngFor="let org of organizacionesDestino()" [value]="org._id">
+                {{ org.name }}
+              </option>
+            </select>
+
+            <button class="btn delete-btn" (click)="removeUsuario(user)">
+              Quitar
+            </button>
+          </div>
+        </li>
+      </ul>
+
+      <ng-template #sinUsuariosOrg>
+        <p>No hay usuarios vinculados a esta organización.</p>
+      </ng-template>
+    </div>
+
+    <!-- USUARIOS FUERA DE LA ORGANIZACIÓN -->
+    <div class="card">
+      <h4>Usuarios disponibles para añadir</h4>
+
+      <ul class="list" *ngIf="usuariosDisponibles.length > 0; else sinDisponibles">
+        <li *ngFor="let user of usuariosDisponibles" class="item">
+          <div>
+            <strong>{{ user.name }}</strong><br />
+            <span>{{ user.email }}</span><br />
+            <small>Organización actual: {{ nombreOrganizacion(user) }}</small>
+          </div>
+
+          <div class="actions">
+            <button class="btn" (click)="addUsuario(user)">
+              Añadir
+            </button>
+          </div>
+        </li>
+      </ul>
+
+      <ng-template #sinDisponibles>
+        <p>No hay usuarios disponibles para añadir.</p>
+      </ng-template>
+    </div>
+
+  </div>
+</div>
